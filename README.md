@@ -18,3 +18,6 @@ Time spent: `16 hours`
 - [X] You can use the default UISwitch for on/off states. Optional: implement a custom switch
 - [X] Clicking on the "Search" button should dismiss the filters page and trigger the search w/ the new filter settings.
 - [X] Display some of the available Yelp categories (choose any 3-4 that you want).
+
+### Walkthrough
+![Video Walkthrough](yelpper.gif)
