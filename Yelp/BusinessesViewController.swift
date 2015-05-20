@@ -11,8 +11,6 @@ import UIKit
 class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, FilterChangeDelegate {
 
     var businesses: [Business]!
-    var filtered: [Business] = [Business]()
-    var searchActive : Bool = false
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -57,18 +55,14 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("BusinessCell", forIndexPath: indexPath) as! BusinessCell
         
-        if searchActive {
-            cell.business = filtered[indexPath.row]
-        } else {
-            cell.business = businesses![indexPath.row];
-        }
-        
+        cell.business = businesses![indexPath.row];
+  
         return cell
     }
     
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchActive = false;
+        searchBar.endEditing(true)
         Business.searchWithTerm(searchBar.text, completion: { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
@@ -82,13 +76,14 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         
         filtersViewController.delegate = self
+        searchBar.endEditing(true)
     }
     
     func filtersChanged(filters: Array<Filter>) {
         
         var category = filters.filter({$0.name == "category"})[0];
         var selectedCategories = category.options.filter({$0.selected}).map({$0.value})
-                
+        
         var deals = filters.filter({$0.name == "deals"})[0]
         var dealsParam = deals.options.filter({$0.selected}).count > 0
         
