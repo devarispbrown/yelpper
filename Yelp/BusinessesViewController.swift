@@ -90,18 +90,11 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         var selectedCategories = category.options.filter({$0.selected}).map({$0.value})
         var categoryParam = ",".join(selectedCategories)
         
-        var radius = filters.filter({$0.name == "radius"})[0];
-        var selectedRadiusOptions = radius.options.filter({$0.selected})
-        var radiusParam : String? = selectedRadiusOptions.count > 0 ? selectedRadiusOptions[0].value : nil
-        
-        var sort = filters.filter({$0.name == "sort"})[0]
-        var sortParam = sort.options.filter({$0.selected})[0].value
-        
         var deals = filters.filter({$0.name == "deals"})[0]
         var dealsParam = deals.options.filter({$0.selected}).count > 0
         
         
-        Business.searchWithTerm(searchBar.text, sort: nil, categories: nil, deals: nil) { (businesses:[Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm(searchBar.text, sort: nil, categories: nil, deals: dealsParam) { (businesses:[Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
         }
