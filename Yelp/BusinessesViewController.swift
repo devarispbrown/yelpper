@@ -88,13 +88,12 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         var category = filters.filter({$0.name == "category"})[0];
         var selectedCategories = category.options.filter({$0.selected}).map({$0.value})
-        var categoryParam = ",".join(selectedCategories)
-        
+                
         var deals = filters.filter({$0.name == "deals"})[0]
         var dealsParam = deals.options.filter({$0.selected}).count > 0
         
         
-        Business.searchWithTerm(searchBar.text, sort: nil, categories: nil, deals: dealsParam) { (businesses:[Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm(searchBar.text, sort: nil, categories: selectedCategories, deals: dealsParam) { (businesses:[Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
         }
